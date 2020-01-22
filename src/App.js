@@ -1,11 +1,25 @@
 import React, {useState} from 'react';
 import './App.css';
+import NamePicker from './namePicker'
+import { FiSend } from 'react-icons/fi'
 
 function App() {
+  const [messages, setMessages] = useState([]);
+
+  console.log(messages);
   return <main>
     <Header />
-    <div className='bubble'>whattup!</div>
-    <TextArea onSend={t=> console.log(t)} />
+      <div className='messages'>
+        {messages.map((m, i)=>{
+          return <div key={i} className='message-container'>
+            <div className='bubble'>{m}</div>
+            </div>
+        })}
+      </div>
+
+    <TextArea onSend={text=> {
+      setMessages([text, ...messages])
+    }} />
   </main>
 }
 
@@ -18,18 +32,24 @@ function TextArea(props) {
     onChange={e=> setText(e.target.value)}
   />
   <button onClick={() => {
-    props.onSend(text);
+    if(text) {
+      props.onSend(text);
+    }
     setText('');
-  }}>
-  Send
+  }} disabled={!text}>
+  <FiSend className='send-icon'/>
   </button>
   </div>
 }
 
 function Header() {
+  const [name, setName] = useState('')
   return <header>
-    <img src='https://upload.wikimedia.org/wikipedia/commons/a/ab/Android_O_Preview_Logo.png'/>
-    <h2> ChatBoi </h2>
+    <div style={{display:'flex', alignItems:'center'}}>
+      <img src='https://upload.wikimedia.org/wikipedia/commons/a/ab/Android_O_Preview_Logo.png' alt='logo'/>
+      <h2> ChatBoi </h2>
+    </div>
+      <NamePicker onSave={setName}/>
   </header>
 }
 

@@ -27,6 +27,7 @@ header{
   font-family: Helvetica;
   color: #d38312;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+  justify-content: space-between;
 }
 
 header img {
@@ -34,6 +35,13 @@ header img {
   height: 24px;
   margin-left: 5px;
   margin-right: 5px;
+}
+
+header button {
+  width: 24px;
+  height: 24px;
+  background-color: rgba(0,0,0,0);
+  border: none;
 }
 
 .text-box {
@@ -48,14 +56,11 @@ header img {
   box-shadow: -4px -4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.text-box button {
-  border-radius: 10px;
-  margin: 5px;
-  height: 40%;
-  background-color: rgb(0,0,0,0.5);
-  color: white;
+/*
+.text-box button:disabled {
+  background:grey;
 }
-
+*/
 input {
   width: 95%;
   height: 40%;
@@ -64,7 +69,12 @@ input {
   outline: none;
   padding: 5px;
   background-color: rgb(0,0,0,0.5);
-  border: 1px solid white
+  border: 1px solid white;
+  color: white;
+}
+
+input:focus {
+  background-color: rgb(0,0,0,0);
 }
 
 ::placeholder {
@@ -72,14 +82,45 @@ input {
 }
 
 .bubble {
-  width: 70px;
-  height: 25px;
   border-radius: 10px;
   font-size: 12px;
   background-color: rgb(0,0,0,0.5);
+  padding: 8px;
+  font-size: 16px;
+  display: inline-block;
+}
+
+.messages {
+  height: 80%;
   position: absolute;
-  left: 5px;
-  top: 90px;
-  text-align: center;
-  padding: 5px;
+  width: 100vw;
+  left: 0;
+  top: 10%;
+  display: flex;
+  flex-direction: column-reverse;
+  overflow-y: scroll;
+}
+
+.message-container {
+  width: 100vw;
+}
+
+.header-icon {
+  width: 24px;
+  height: 24px;
+  color: white;
+  outline: none;
+}
+
+.send-icon {
+  width: 20px;
+  height: 20px;
+  color: white;
+}
+
+.edit-username {
+  display: flex;
+  align-items: center;
+  margin-right: 24px;
+  font-size: 24px;
 }
