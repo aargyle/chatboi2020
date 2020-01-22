@@ -1,24 +1,35 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 import NamePicker from './namePicker'
 import { FiSend } from 'react-icons/fi'
+import {db} from './db'
 
 function App() {
   const [messages, setMessages] = useState([]);
+  const [name, setName] = useState('')
+  useEffect(()=>{
+    db.listen({
+      receive: m=> {
+        setMessages(current=> [m, ...current])
+      },
+    })
+  }, [])
 
   console.log(messages);
   return <main>
-    <Header />
-      <div className='messages'>
-        {messages.map((m, i)=>{
-          return <div key={i} className='message-container'>
-            <div className='bubble'>{m}</div>
-            </div>
-        })}
-      </div>
+    <Header setName={setName} />
+    <div className='messages'>
+      {messages.map((m, i)=>{
+        return <div key={i} className='message-container'>
+          <div className='bubble'>{m.text}</div>
+          </div>
+      })}
+    </div>
 
     <TextArea onSend={text=> {
-      setMessages([text, ...messages])
+      db.send({
+        text, name, ts: new Date(),
+      })
     }} />
   </main>
 }
@@ -42,14 +53,13 @@ function TextArea(props) {
   </div>
 }
 
-function Header() {
-  const [name, setName] = useState('')
+function Header(props) {
   return <header>
     <div style={{display:'flex', alignItems:'center'}}>
       <img src='https://upload.wikimedia.org/wikipedia/commons/a/ab/Android_O_Preview_Logo.png' alt='logo'/>
       <h2> ChatBoi </h2>
     </div>
-      <NamePicker onSave={setName}/>
+      <NamePicker onSave={props.setName}/>
   </header>
 }
 
