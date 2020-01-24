@@ -2,18 +2,24 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import NamePicker from './namePicker'
 import { FiSend } from 'react-icons/fi'
-import {db} from './db'
+import {db, useDB} from './db'
+import {BrowserRouter, Route} from 'react-router-dom'
 
 function App() {
-  const [messages, setMessages] = useState([]);
-  const [name, setName] = useState('')
   useEffect(()=>{
-    db.listen({
-      receive: m=> {
-        setMessages(current=> [m, ...current])
-      },
-    })
+    const {pathname} = window.location
+    if(pathname.length<2) window.location.pathname='home'
   }, [])
+
+  return <BrowserRouter>
+    <Route path='/:room' component={Room}/>
+  </BrowserRouter>
+}
+
+function Room(props) {
+  const {room} = props.match.params
+  const [name, setName] = useState('')
+  const messages = useDB(room)
 
   console.log(messages);
   return <main>
@@ -21,14 +27,15 @@ function App() {
     <div className='messages'>
       {messages.map((m, i)=>{
         return <div key={i} className='message-container'>
-          <div className='bubble'>{m.text}</div>
-          </div>
+          <div className='message-name'>{m.name ? m.name : 'Anonymous'}</div>
+          <div className='bubble' from={m.name===name?'me':'you'}>{m.text}</div>
+        </div>
       })}
     </div>
 
     <TextArea onSend={text=> {
       db.send({
-        text, name, ts: new Date(),
+        text, name, ts: new Date(), room
       })
     }} />
   </main>
