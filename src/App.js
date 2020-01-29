@@ -29,6 +29,7 @@ function App() {
   </BrowserRouter>
 }
 
+// individual chat room
 function Room(props) {
   const {room} = props.match.params
   const [name, setName] = useState('')
@@ -65,6 +66,7 @@ function Room(props) {
   </Div100vh>
 }
 
+// img source
 const bucket = 'https://firebasestorage.googleapis.com/v0/b/chatboi2020.appspot.com/o/'
 const suffix = '.jpg?alt=media'
 
@@ -77,6 +79,7 @@ function Message({m, name}) {
   </div>
 }
 
+// Input text for message
 function TextArea(props) {
   const [text, setText] = useState('');
 

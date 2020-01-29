@@ -27,6 +27,7 @@ function NamePicker(props) {
         <input value={name} ref={inputEl}
             style={{display: showName ? 'none' : 'flex'}}
             onChange={e=> setName(e.target.value)}
+            placeholder='Enter name'
             onKeyPress={e=> {
                 if(e.key==='Enter') props.onSave(name)
             }}
